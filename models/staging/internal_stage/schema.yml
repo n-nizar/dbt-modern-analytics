@@ -1,6 +1,6 @@
 version: 2
 models:
-  - name: internal_stage_sales_source
+  - name: sales_staging
     description: Data ingested from the Sales.csv file, which has been uploaded from the local drive into Snowflake.
     columns:
       - name: CustomerID

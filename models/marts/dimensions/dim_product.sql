@@ -6,7 +6,7 @@
 
 WITH source_data AS(
     SELECT *
-    FROM {{ ref('internal_stage_sales_source') }}
+    FROM {{ ref('sales_staging') }}
 ),
 
 prep AS (
