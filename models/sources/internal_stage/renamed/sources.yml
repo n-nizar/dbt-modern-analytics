@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: internal_stage
+    database: ma_db_raw
+    schema: internal_stage
+    tables:
+      - name: sales

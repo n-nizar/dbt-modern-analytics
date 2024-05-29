@@ -1,0 +1,13 @@
+version: 2
+models:
+  - name: internal_stage_sales_source
+    description: Data ingested from the Sales.csv file, which has been uploaded from the local drive into Snowflake.
+    columns:
+      - name: CustomerID
+        description: Unique ID assigned to each customer
+        meta:
+          sensitive: true
+      - name: EmailName
+        description: Concatenates the Email and Name columns into a single string
+        # meta:
+        #   masking_policy: general_data_masking

@@ -1,0 +1,51 @@
+# Project Details
+
+name: "dbt_modern_analytics"
+version: "1.0.0"
+profile: "dbt-modern-analytics"
+
+# File Path Configuration
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# Directories to be removed by `dbt clean`
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Model Configuration
+
+models:
+  dbt_modern_analytics:
+    +materialized: view
+
+    sources:
+      +database: ma_db_prep
+      +tags: ["sources"]
+
+      internal_stage:
+        schema: internal_stage
+
+        dedupde:
+          +materialized: table
+
+        renamed:
+          +materialized: view
+
+    staging:
+      +database: ma_db_prep
+      +materialized: table
+      +schema: common_prep
+
+    marts:
+      +database: ma_db_prep
+      +materialized: table
+
+      dimensions:
+        +schema: common
