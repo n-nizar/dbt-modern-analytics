@@ -26,26 +26,19 @@ models:
     +materialized: view
 
     sources:
-      +database: ma_db_prep
+      +database: "{{ env_var('DBT_MA_STG') }}"
+      +schema: sources
       +tags: ["sources"]
-
-      internal_stage:
-        schema: internal_stage
-
-        dedupde:
-          +materialized: table
-
-        renamed:
-          +materialized: view
+      +materialized: view
 
     staging:
-      +database: ma_db_prep
+      +database: "{{ env_var('DBT_MA_STG') }}"
+      +schema: staging
+      +tags: ["staging"]
       +materialized: table
-      +schema: common_prep
 
     marts:
-      +database: ma_db_prep
+      +database: "{{ env_var('DBT_MA_STG') }}"
+      +schema: sales_mart
+      +tags: ["sales_mart"]
       +materialized: table
-
-      dimensions:
-        +schema: common

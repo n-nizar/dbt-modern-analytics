@@ -7,7 +7,7 @@
 
 WITH source AS(
     SELECT *
-    FROM {{ ref('internal_stage_sales_renamed_source') }}
+    FROM {{ ref('sales_source') }}
 ),
 
 updated AS(
