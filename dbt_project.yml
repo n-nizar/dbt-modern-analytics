@@ -19,6 +19,20 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
+# Variables
+
+vars:
+  dbt_audit_schema: dbt_audit
+  dbt_audit_table: dbt_run_audit
+
+# Run Hooks
+
+on-run-start:
+  - "{{ dbt_audit_start_exec(invocation_id, 'Full Execution', 'Full Execution') }}"
+
+on-run-end:
+  - "{{ dbt_audit_finish_exec(invocation_id, 'Full Execution') }}"
+
 # Model Configuration
 
 models:
