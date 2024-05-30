@@ -22,8 +22,9 @@ clean-targets:
 # Variables
 
 vars:
+  dbt_audit_database: "{{ env_var('DBT_MA_ENV_DB') }}"
   dbt_audit_schema: dbt_audit
-  dbt_audit_table: dbt_run_audit
+  dbt_audit_table: dbt_run
 
 # Run Hooks
 
@@ -40,19 +41,19 @@ models:
     +materialized: view
 
     sources:
-      +database: "{{ env_var('DBT_MA_STG') }}"
+      +database: "{{ env_var('DBT_MA_ENV_DB') }}"
       +schema: sources
       +tags: ["sources"]
       +materialized: view
 
     staging:
-      +database: "{{ env_var('DBT_MA_STG') }}"
+      +database: "{{ env_var('DBT_MA_ENV_DB') }}"
       +schema: staging
       +tags: ["staging"]
       +materialized: table
 
     marts:
-      +database: "{{ env_var('DBT_MA_STG') }}"
+      +database: "{{ env_var('DBT_MA_ENV_DB') }}"
       +schema: sales_mart
       +tags: ["sales_mart"]
       +materialized: table
