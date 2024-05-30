@@ -1,5 +1,5 @@
-{% set pre_hook = dbt_audit_start_exec(invocation_id, 'Model', this.name) %}
-{% set post_hook = dbt_audit_finish_exec(invocation_id, this.name) %}
+{% set pre_hook = dbt_audit_started_exec() %}
+{% set post_hook = dbt_audit_finished_exec() %}
 
 {{ config({
     "materialized": "incremental",
