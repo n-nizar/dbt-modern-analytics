@@ -22,36 +22,38 @@ clean-targets:
 # Variables
 
 vars:
-  dbt_audit_database: "{{target.database}}"
+  dbt_audit_database: "{{ env_var('DBT_MA_ENV_DB') }}"
   dbt_audit_schema: dbt_audit
   dbt_audit_table: dbt_run
 
 # Run Hooks
 
 on-run-start:
-  - "{{ dbt_audit_started_exec() }}"
+  - "{{ dbt_audit_start_exec(invocation_id, 'Full Execution', 'Full Execution') }}"
 
 on-run-end:
-  - "{{ dbt_audit_finished_exec() }}"
+  - "{{ dbt_audit_finish_exec(invocation_id, 'Full Execution') }}"
 
 # Model Configuration
 
 models:
   dbt_modern_analytics:
-    +database: "{{target.database}}"
     +materialized: view
 
     sources:
+      +database: "{{ env_var('DBT_MA_ENV_DB') }}"
       +schema: sources
       +tags: ["sources"]
       +materialized: view
 
     staging:
+      +database: "{{ env_var('DBT_MA_ENV_DB') }}"
       +schema: staging
       +tags: ["staging"]
       +materialized: table
 
     marts:
+      +database: "{{ env_var('DBT_MA_ENV_DB') }}"
       +schema: sales_mart
       +tags: ["sales_mart"]
       +materialized: table
