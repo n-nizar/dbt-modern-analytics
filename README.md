@@ -41,7 +41,7 @@ The fact table will store transactional data and metrics for analysis. It will i
   - CampaignKey
   - ManufacturerKey
   - Units
-  - LoadDate
+  - UpdatedTS
 
 ### Dimension Tables
 
@@ -56,6 +56,7 @@ The dimension tables will provide context to the fact table by storing descripti
 - Region
 - District
 - Country
+- UpdatedTS
 
 #### DimDate
 - OrderDate
@@ -71,11 +72,15 @@ The dimension tables will provide context to the fact table by storing descripti
 - Product
 - Category
 - Segment
+- UnitPrice
+- UnitCost
+- UpdatedTS
 
 #### DimManufacturer
 - ManufacturerKey (surrogate key)
 - ManufacturerID
 - Manufacturer
+- UpdatedTS
 
 #### DimGeo
 - GeoKey (surrogate key)
@@ -85,6 +90,7 @@ The dimension tables will provide context to the fact table by storing descripti
 - Region
 - District
 - Country
+- UpdatedTS
 
 ## Project Structure
 
