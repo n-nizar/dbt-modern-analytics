@@ -1,10 +1,9 @@
-{% snapshot dim_product_hist %}
+{% snapshot dim_product_snapshot %}
 
 {{ config({
-    "target_schema": "sales_mart",
     "unique_key": "ProductID",
-    "strategy": "timestamp",
-    "updated_at": "LoadDate"
+    "strategy": "check",
+    "check_cols": ["ProductSK"]
 }) }}
 
 WITH source_data AS(
@@ -21,15 +20,13 @@ prep AS (
         Category                                                        AS Category,
         Segment                                                         AS Segment,
         UnitCost                                                        AS UnitCost,
-        UnitPrice                                                       AS UnitPrice,
-        MAX(LoadDate)                                                   AS LoadDate
+        UnitPrice                                                       AS UnitPrice
     FROM source_data
-    GROUP BY ProductSK, ProductID, Product, Category, Segment, UnitCost, UnitPrice
 )
 
 
 SELECT *,
-        CURRENT_TIMESTAMP                                               AS UpdatedTS
+        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ       AS UpdatedTS
 FROM prep src
 
 {% endsnapshot %}

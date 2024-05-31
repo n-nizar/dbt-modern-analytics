@@ -13,9 +13,9 @@ WITH source AS(
 updated AS(
     SELECT 
     {{ dbt_utils.generate_surrogate_key(['OrderDate', 'ProductID', 'CampaignID', 'CustomerID', 'ManufacturerID', 'ZipCode']) }}
-                                    AS SalesID,
+                                                                    AS SalesID,
     *,
-    CURRENT_TIMESTAMP               AS UpdatedTS
+    CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ       AS UpdatedTS
     FROM source
 )
 

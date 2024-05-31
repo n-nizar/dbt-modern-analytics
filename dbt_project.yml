@@ -62,3 +62,7 @@ models:
 
     wip:
       +tags: ["wip"]
+
+snapshots:
+  dbt_modern_analytics:
+    +target_schema: dbt_snapshots
