@@ -1,11 +1,6 @@
-{% set pre_hook = dbt_audit_started_exec() %}
-{% set post_hook = dbt_audit_finished_exec() %}
-
 {{ config({
     "materialized": "incremental",
-    "tags": ["yearly-run"],
-    "pre_hook": pre_hook,
-    "post_hook": post_hook
+    "tags": ["yearly-run"]
 })
 }}
 
@@ -20,10 +15,13 @@ WITH date_spine AS (
 
 ), final as (
     SELECT 
-        date_day                                         AS date_day,
-        DATE_PART('dayofmonth', date_day)                AS dayofmonth,
-        DATE_PART('month', date_day)                     AS month,
-        DATE_PART('year', date_day)                      AS year
+        date_day                                            AS date_day,
+        DATE_PART('dayofmonth', date_day)                   AS day,
+        DAYNAME(TO_DATE(date_day))                          AS dayname,
+        DATE_PART('month', date_day)                        AS month,
+        MONTHNAME(TO_DATE(date_day))                        AS monthname,
+        DATE_PART('quarter', date_day)                      AS quarter,
+        DATE_PART('year', date_day)                         AS year
     FROM
     date_spine
 )

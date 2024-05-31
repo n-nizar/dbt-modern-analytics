@@ -40,6 +40,10 @@ models:
   dbt_modern_analytics:
     +database: "{{ target.database }}"
     +materialized: view
+    +pre-hook:
+      - "{{ dbt_audit_started_exec() }}"
+    +post-hook:
+      - "{{ dbt_audit_finished_exec() }}"
 
     sources:
       +schema: sources
@@ -55,3 +59,6 @@ models:
       +schema: sales_mart
       +tags: ["sales_mart"]
       +materialized: table
+
+    wip:
+      +tags: ["wip"]
