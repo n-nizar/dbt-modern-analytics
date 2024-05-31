@@ -4,11 +4,11 @@
 
 {% if this.name %}
 INSERT INTO {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }} (invocation_id, execution_type, model, status, start_time)
-VALUES ('{{ invocation_id }}', 'Model', '{{ this.name }}', 'Started Execution', CURRENT_TIMESTAMP())
+VALUES ('{{ invocation_id }}', 'Model', '{{ this.name }}', 'Started Execution', CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ)
 
 {% else %}
 INSERT INTO {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }} (invocation_id, execution_type, model, status, start_time)
-VALUES ('{{ invocation_id }}', 'Full Execution', 'Full Execution', 'Started Execution', CURRENT_TIMESTAMP())
+VALUES ('{{ invocation_id }}', 'Full Execution', 'Full Execution', 'Started Execution', CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ)
 
 {% endif %}
 {% endset %}
@@ -23,12 +23,12 @@ VALUES ('{{ invocation_id }}', 'Full Execution', 'Full Execution', 'Started Exec
 
 {% if this.name %}
 UPDATE {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }}
-SET status = 'Finished Execution', end_time = CURRENT_TIMESTAMP()
+SET status = 'Finished Execution', end_time = CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ
 WHERE invocation_id = '{{ invocation_id }}' AND model = '{{ this.name }}'
 
 {% else %}
 UPDATE {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }}
-SET status = 'Finished Execution', end_time = CURRENT_TIMESTAMP()
+SET status = 'Finished Execution', end_time = CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ
 WHERE invocation_id = '{{ invocation_id }}' AND model = 'Full Execution'
 
 {% endif %}
