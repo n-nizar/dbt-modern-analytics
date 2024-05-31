@@ -24,7 +24,7 @@ prep AS (
 
 
 SELECT *,
-        CURRENT_TIMESTAMP                                               AS UpdatedTS
+        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ      AS UpdatedTS
 FROM prep src
 
 {% if is_incremental() %}
