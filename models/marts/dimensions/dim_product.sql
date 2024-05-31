@@ -1,12 +1,7 @@
-{% set pre_hook = dbt_audit_started_exec() %}
-{% set post_hook = dbt_audit_finished_exec() %}
-
 {{ config({
     "materialized": "incremental",
     "unique_key": "ProductID",
-    "incremental_strategy": "merge",
-    "pre_hook": pre_hook,
-    "post_hook": post_hook
+    "incremental_strategy": "merge"
 }) }}
 
 WITH source_data AS(
