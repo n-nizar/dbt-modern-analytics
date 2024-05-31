@@ -34,12 +34,12 @@ The source data contains the following columns:
 
 The fact table will store transactional data and metrics for analysis. It will include the following fields:
 - FactSales
-  - SalesKey
-  - ProductKey
+  - SalesID
+  - ProductSK
   - OrderDate
-  - CustomerKey
-  - CampaignKey
-  - ManufacturerKey
+  - CustomerSK
+  - CampaignSK
+  - ManufacturerSK
   - Units
   - UpdatedTS
 
@@ -48,7 +48,7 @@ The fact table will store transactional data and metrics for analysis. It will i
 The dimension tables will provide context to the fact table by storing descriptive information about the entities involved.
 
 #### DimCustomer
-- CustomerKey (surrogate key)
+- CustomerSK (surrogate key)
 - CustomerID
 - Email Name
 - City
@@ -67,7 +67,7 @@ The dimension tables will provide context to the fact table by storing descripti
 - Weekday
 
 #### DimProduct
-- ProductKey (surrogate key)
+- ProductSK (surrogate key)
 - ProductID
 - Product
 - Category
@@ -77,13 +77,13 @@ The dimension tables will provide context to the fact table by storing descripti
 - UpdatedTS
 
 #### DimManufacturer
-- ManufacturerKey (surrogate key)
+- ManufacturerSK (surrogate key)
 - ManufacturerID
 - Manufacturer
 - UpdatedTS
 
 #### DimGeo
-- GeoKey (surrogate key)
+- GeoSK (surrogate key)
 - ZipCode
 - City
 - State

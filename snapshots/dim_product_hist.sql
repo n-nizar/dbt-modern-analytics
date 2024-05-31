@@ -1,7 +1,10 @@
+{% snapshot dim_product_hist %}
+
 {{ config({
-    "materialized": "incremental",
+    "target_schema": "sales_mart",
     "unique_key": "ProductID",
-    "incremental_strategy": "merge"
+    "strategy": "timestamp",
+    "updated_at": "LoadDate"
 }) }}
 
 WITH source_data AS(
@@ -18,8 +21,10 @@ prep AS (
         Category                                                        AS Category,
         Segment                                                         AS Segment,
         UnitCost                                                        AS UnitCost,
-        UnitPrice                                                       AS UnitPrice
+        UnitPrice                                                       AS UnitPrice,
+        MAX(LoadDate)                                                   AS LoadDate
     FROM source_data
+    GROUP BY ProductSK, ProductID, Product, Category, Segment, UnitCost, UnitPrice
 )
 
 
@@ -27,11 +32,4 @@ SELECT *,
         CURRENT_TIMESTAMP                                               AS UpdatedTS
 FROM prep src
 
-{% if is_incremental() %}
-WHERE NOT EXISTS (
-        SELECT 1
-        FROM {{this}} dest
-        WHERE   src.ProductSK = dest.ProductSK)
-{% endif %}
-
-
+{% endsnapshot %}

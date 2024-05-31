@@ -1,6 +1,6 @@
 {{config({
     "materialized": "incremental",
-    "unique_key": ["OrderDate", "ProductID", "CampaignID", "CustomerID", "ManufacturerID", "ZipCode"],
+    "unique_key": ["SalesID"],
     "incremental_strategy": "merge"
 })}}
 
@@ -11,8 +11,11 @@ WITH source AS(
 ),
 
 updated AS(
-    SELECT *,
-    CURRENT_TIMESTAMP               AS ModifiedTS
+    SELECT 
+    {{ dbt_utils.generate_surrogate_key(['OrderDate', 'ProductID', 'CampaignID', 'CustomerID', 'ManufacturerID', 'ZipCode']) }}
+                                    AS SalesID,
+    *,
+    CURRENT_TIMESTAMP               AS UpdatedTS
     FROM source
 )
 
