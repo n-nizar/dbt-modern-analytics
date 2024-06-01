@@ -17,8 +17,8 @@ renamed AS(
         -- Entity = Geography
         City::VARCHAR               AS City,
         State::VARCHAR              AS State,
-        Region::VARCHAR             AS Region,
         District::VARCHAR           AS District,
+        Region::VARCHAR             AS Region,
         Country::VARCHAR            AS Country,
 
         -- Entity = Product
