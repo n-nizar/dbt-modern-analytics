@@ -3,12 +3,12 @@
 {% set audit_start_query %}
 
 {% if this.name %}
-INSERT INTO {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }} (invocation_id, execution_type, model, status, start_time)
-VALUES ('{{ invocation_id }}', 'Model', '{{ this.name }}', 'Started Execution', CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ)
+INSERT INTO {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }} (invocation_id,  object_type, object, status, start_time)
+VALUES ('{{ invocation_id }}', '{{ model.resource_type | title }}', '{{ this.name }}', 'started', CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ)
 
 {% else %}
-INSERT INTO {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }} (invocation_id, execution_type, model, status, start_time)
-VALUES ('{{ invocation_id }}', 'Full Execution', 'Full Execution', 'Started Execution', CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ)
+INSERT INTO {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }} (invocation_id,  object_type, object, status, start_time)
+VALUES ('{{ invocation_id }}', '{{ model.resource_type | title }}', '{{ model.resource_type | title }}', 'started', CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ)
 
 {% endif %}
 {% endset %}
@@ -24,12 +24,12 @@ VALUES ('{{ invocation_id }}', 'Full Execution', 'Full Execution', 'Started Exec
 {% if this.name %}
 UPDATE {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }}
 SET status = 'Finished Execution', end_time = CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ
-WHERE invocation_id = '{{ invocation_id }}' AND model = '{{ this.name }}'
+WHERE invocation_id = '{{ invocation_id }}' AND object = '{{ this.name }}'
 
 {% else %}
 UPDATE {{ var('dbt_audit_database') }}.{{ var('dbt_audit_schema') }}.{{ var('dbt_audit_table') }}
 SET status = 'Finished Execution', end_time = CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ
-WHERE invocation_id = '{{ invocation_id }}' AND model = 'Full Execution'
+WHERE invocation_id = '{{ invocation_id }}' AND  object = 'Operation'
 
 {% endif %}
 {% endset %}

@@ -25,8 +25,7 @@ deduped AS (
     {{ dedupe_records('ProductID', 'LoadDate') }}
 )
 
-SELECT *,
-        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ       AS UpdatedTS
+SELECT *
 FROM deduped
 
 {% endsnapshot %}

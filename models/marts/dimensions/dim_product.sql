@@ -11,7 +11,7 @@ WITH source_data AS(
 
 deduped AS (
     SELECT DISTINCT 
-        {{ dbt_utils.generate_surrogate_key(['ProductID', 'Product', 'Category', 'Segment', 'UnitCost', 'UnitPrice']) }}
+        {{ dbt_utils.generate_surrogate_key(['ProductID', 'Product', 'Category', 'Segment', 'UnitCost', 'UnitPrice']) }}::STRING
                                                                         AS ProductSK,
         ProductID                                                       AS ProductID,
         Product                                                         AS Product,
