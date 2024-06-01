@@ -9,7 +9,7 @@ WITH source_data AS(
     FROM {{ ref('sales_staging') }}
 ),
 
-prep AS (
+deduped AS (
     SELECT DISTINCT 
         {{ dbt_utils.generate_surrogate_key(['ProductID', 'Product', 'Category', 'Segment', 'UnitCost', 'UnitPrice']) }}
                                                                         AS ProductSK,
@@ -20,12 +20,13 @@ prep AS (
         UnitCost                                                        AS UnitCost,
         UnitPrice                                                       AS UnitPrice
     FROM source_data
+    {{ dedupe_records('ProductID', 'LoadDate') }}
 )
 
 
 SELECT *,
         CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ      AS UpdatedTS
-FROM prep src
+FROM deduped src
 
 {% if is_incremental() %}
 WHERE NOT EXISTS (

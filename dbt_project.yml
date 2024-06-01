@@ -66,3 +66,7 @@ models:
 snapshots:
   dbt_modern_analytics:
     +target_schema: dbt_snapshots
+    +pre-hook:
+      - "{{ dbt_audit_started_exec() }}"
+    +post-hook:
+      - "{{ dbt_audit_finished_exec() }}"

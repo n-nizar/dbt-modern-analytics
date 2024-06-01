@@ -10,17 +10,18 @@ WITH source AS(
     FROM {{ ref('sales_source') }}
 ),
 
-updated AS(
+deduped AS(
     SELECT 
     {{ dbt_utils.generate_surrogate_key(['OrderDate', 'ProductID', 'CampaignID', 'CustomerID', 'ManufacturerID', 'ZipCode']) }}
                                                                     AS SalesID,
     *,
     CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ       AS UpdatedTS
     FROM source
+    {{ dedupe_records('SalesID', 'LoadDate') }}
 )
 
 SELECT *
-FROM updated
+FROM deduped
 
 {% if is_incremental() %}
 WHERE LoadDate >= (SELECT MAX(LoadDate) FROM {{ this }})
