@@ -1,6 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "CustomerID",
+    "unique_key": "customer_id",
     "incremental_strategy": "merge"
 }) }}
 
@@ -10,27 +10,27 @@
 
 deduped AS (
     SELECT DISTINCT 
-        {{ dbt_utils.generate_surrogate_key(['CustomerID', 'Email', 'FirstName', 'LastName', 'sales_staging.ZipCode']) }}
-                                                                                        AS CustomerSK,
-        CustomerID                                                                      AS CustomerID,
-        Email                                                                           AS Email,
-        FirstName                                                                       AS FirstName,
-        LastName                                                                        AS LastName,
-        GeoSK                                                                           AS GeoSK
+        {{ dbt_utils.generate_surrogate_key(['customer_id', 'email', 'first_name', 'last_name', 'sales_staging.zip_code']) }}
+                                                                                        AS customer_sk,
+        customer_id                                                                     AS customer_id,
+        email                                                                           AS email,
+        first_name                                                                      AS first_name,
+        last_name                                                                       AS last_name,
+        geo_sk                                                                          AS geo_sk
     FROM sales_staging
     INNER JOIN dim_geo
-    ON sales_staging.ZipCode = dim_geo.ZipCode
-    {{ dedupe_records('CustomerID', 'LoadDate') }}
+    ON sales_staging.zip_code = dim_geo.zip_code
+    {{ dedupe_records('customer_id', 'load_date') }}
 )
 
 
 SELECT *,
-        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ      AS UpdatedTS
+        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ                       AS updated_ts
 FROM deduped src
 
 {% if is_incremental() %}
 WHERE NOT EXISTS (
         SELECT 1
         FROM {{this}} dest
-        WHERE   src.CustomerSK = dest.CustomerSK)
+        WHERE   src.customer_sk = dest.customer_sk)
 {% endif %}

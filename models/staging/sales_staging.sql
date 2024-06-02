@@ -1,6 +1,6 @@
 {{config({
     "materialized": "incremental",
-    "unique_key": ["SalesID"],
+    "unique_key": ["sales_id"],
     "incremental_strategy": "merge"
 })}}
 
@@ -14,50 +14,50 @@ deduped AS(
     SELECT 
 
     -- ID Columns
-    {{ dbt_utils.generate_surrogate_key(['OrderDate', 'ProductID', 'CampaignID', 'CustomerID', 'ManufacturerID', 'ZipCode']) }}::STRING
-                                                                                        AS SalesID,
-        OrderDate                                                                       AS OrderDate,
-        ProductID                                                                       AS ProductID,
-        CampaignID                                                                      AS CampaignID,
-        CustomerID                                                                      AS CustomerID,
-        ManufacturerID                                                                  AS ManufacturerID,
-        ZipCode                                                                         AS ZipCode,
+    {{ dbt_utils.generate_surrogate_key(['order_date', 'product_id', 'campaign_id', 'customer_id', 'manufacturer_id', 'zip_code']) }}::STRING
+                                                                                        AS sales_id,
+        order_date                                                                      AS order_date,
+        product_id                                                                      AS product_id,
+        campaign_id                                                                     AS campaign_id,
+        customer_id                                                                     AS customer_id,
+        manufacturer_id                                                                 AS manufacturer_id,
+        zip_code                                                                        AS zip_code,
 
         -- Entity = Geography
-        SPLIT_PART(City, ', ', 1)::STRING                                               AS City,
-        State                                                                           AS State,
-        SPLIT_PART(District, ' #', 2)::STRING                                           AS District,
-        Region                                                                          AS Region,
-        Country                                                                         AS Country,
+        SPLIT_PART(city, ', ', 1)::STRING                                               AS city,
+        state                                                                           AS state,
+        SPLIT_PART(district, ' #', 2)::STRING                                           AS district,
+        region                                                                          AS region,
+        country                                                                         AS country,
 
-        -- Entity = Product
-        Product                                                                         AS Product,
-        Category                                                                        AS Category,
-        Segment                                                                         AS Segment,
-        UnitCost                                                                        AS UnitCost,
-        UnitPrice                                                                       AS UnitPrice,
+        -- Entity = product
+        product                                                                         AS product,
+        category                                                                        AS category,
+        segment                                                                         AS segment,
+        unit_cost                                                                       AS unit_cost,
+        unit_price                                                                      AS unit_price,
 
         -- Entity = Customer
-        LOWER(TRIM(REGEXP_SUBSTR(EmailName, '\\(([^)]+)\\)', 1, 1, 'e', 1)))::STRING    AS Email,
-        TRIM(REGEXP_SUBSTR(EmailName, ', ([^ ]+)', 1, 1, 'e', 1))::STRING               AS FirstName,
-        TRIM(REGEXP_SUBSTR(EmailName, ': ([^,]+),', 1, 1, 'e', 1))::STRING              AS LastName,
+        LOWER(TRIM(REGEXP_SUBSTR(email_name, '\\(([^)]+)\\)', 1, 1, 'e', 1)))::STRING   AS email,
+        TRIM(REGEXP_SUBSTR(email_name, ', ([^ ]+)', 1, 1, 'e', 1))::STRING              AS first_name,
+        TRIM(REGEXP_SUBSTR(email_name, ': ([^,]+),', 1, 1, 'e', 1))::STRING             AS last_name,
 
-        -- Entity = Manufacturer
-        Manufacturer                                                                    AS Manufacturer,
+        -- Entity = manufacturer
+        manufacturer                                                                    AS manufacturer,
 
         -- Metrics
-        Units                                                                           AS Units,
+        units                                                                           AS units,
 
         -- Metadata
-        LoadDate                                                                        AS LoadDate,
-        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ                       AS UpdatedTS
+        load_date                                                                       AS load_date,
+        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ                       AS updated_ts
     FROM source
-    {{ dedupe_records('SalesID', 'LoadDate') }}
+    {{ dedupe_records('sales_id', 'load_date') }}
 )
 
 SELECT *
 FROM deduped
 
 {% if is_incremental() %}
-WHERE LoadDate >= (SELECT MAX(LoadDate) FROM {{ this }})
+WHERE load_date >= (SELECT MAX(load_date) FROM {{ this }})
 {% endif %}
