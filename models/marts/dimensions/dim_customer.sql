@@ -8,25 +8,32 @@
 ('dim_geo', 'dim_geo')]) 
 }},
 
-deduped AS (
+deduped as (
+  {{ dbt_utils.deduplicate(
+      relation='sales_staging',
+      partition_by='customer_id',
+      order_by='load_date DESC NULLS LAST',
+     )
+  }}
+),
+
+final AS (
     SELECT DISTINCT 
-        {{ dbt_utils.generate_surrogate_key(['customer_id', 'email', 'first_name', 'last_name', 'sales_staging.zip_code']) }}
+        {{ dbt_utils.generate_surrogate_key(['customer_id', 'email', 'first_name', 'last_name', 'deduped.zip_code']) }}
                                                                                         AS customer_sk,
         customer_id                                                                     AS customer_id,
         email                                                                           AS email,
         first_name                                                                      AS first_name,
         last_name                                                                       AS last_name,
         geo_sk                                                                          AS geo_sk
-    FROM sales_staging
+    FROM deduped
     INNER JOIN dim_geo
-    ON sales_staging.zip_code = dim_geo.zip_code
-    {{ dedupe_records('customer_id', 'load_date') }}
+    ON deduped.zip_code = dim_geo.zip_code
 )
-
 
 SELECT *,
         CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ                       AS updated_ts
-FROM deduped src
+FROM final src
 
 {% if is_incremental() %}
 WHERE NOT EXISTS (

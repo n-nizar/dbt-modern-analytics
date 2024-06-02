@@ -19,20 +19,31 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-# Variables
+# Variables Configuration
 
 vars:
   dbt_audit_database: "{{ target.database }}"
   dbt_audit_schema: dbt_audit
   dbt_audit_table: dbt_run
 
-# Run Hooks
+# Run Hooks Configuration
 
 on-run-start:
   - "{{ dbt_audit_started_exec() }}"
 
 on-run-end:
   - "{{ dbt_audit_finished_exec() }}"
+
+# Seeds Configuration
+
+seeds:
+  dbt_modern_analytics:
+    +database: "{{ target.database }}"
+    +schema: sources
+    +pre-hook:
+      - "{{ dbt_audit_started_exec() }}"
+    +post-hook:
+      - "{{ dbt_audit_finished_exec() }}"
 
 # Model Configuration
 
@@ -62,6 +73,8 @@ models:
 
     wip:
       +tags: ["wip"]
+
+# Snapshots Configuration
 
 snapshots:
   dbt_modern_analytics:
