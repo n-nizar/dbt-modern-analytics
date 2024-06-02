@@ -33,64 +33,66 @@ The source data contains the following columns:
 ### Fact Table
 
 The fact table will store transactional data and metrics for analysis. It will include the following fields:
-- FactSales
-  - SalesID
-  - ProductSK
-  - OrderDate
-  - CustomerSK
-  - CampaignSK
-  - ManufacturerSK
+#### fact_sales
+  - sales_sk
+  - sales_id
+  - product_sk
+  - order_date
+  - customer_sk
+  - campaign_id
+  - geo_sk
+  - manufacturer_sk
   - Units
-  - UpdatedTS
+  - updated_ts
 
 ### Dimension Tables
 
 The dimension tables will provide context to the fact table by storing descriptive information about the entities involved.
 
-#### DimCustomer
-- CustomerSK (surrogate key)
-- CustomerID
-- Email Name
-- City
-- State
-- Region
-- District
-- Country
-- UpdatedTS
+#### dim_customer
+- customer_sk (surrogate key)
+- customer_id
+- email
+- first_name
+- last_name
+- geo_sk
+- updated_ts
 
-#### DimDate
-- OrderDate
-- Day
-- Month
-- Quarter
-- Year
-- Weekday
+#### dim_date
+- order_date
+- day
+- day_name
+- month
+- month_name
+- quarter
+- year
+- weekday
 
-#### DimProduct
-- ProductSK (surrogate key)
-- ProductID
-- Product
-- Category
-- Segment
-- UnitPrice
-- UnitCost
-- UpdatedTS
+#### dim_product
+- product_sk (surrogate key)
+- product_id
+- product
+- category
+- segment
+- unit_price
+- unit_cost
+- updated_ts
 
-#### DimManufacturer
-- ManufacturerSK (surrogate key)
-- ManufacturerID
-- Manufacturer
-- UpdatedTS
+#### dim_manufacturer
+- manufacturer_sk (surrogate key)
+- manufacturer_id
+- manufacturer
+- updated_ts
 
-#### DimGeo
-- GeoSK (surrogate key)
-- ZipCode
-- City
-- State
-- Region
-- District
-- Country
-- UpdatedTS
+#### dim_geo
+- geo_sk (surrogate key)
+- zip_code
+- city
+- state
+- region
+- district
+- country
+- updated_ts
 
 ## Project Structure
 

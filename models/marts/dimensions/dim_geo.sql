@@ -1,6 +1,6 @@
 {{ config({
     "materialized": "incremental",
-    "unique_key": "ZipCode",
+    "unique_key": "zip_code",
     "incremental_strategy": "merge"
 }) }}
 
@@ -11,26 +11,26 @@ WITH source_data AS(
 
 deduped AS (
     SELECT DISTINCT 
-        {{ dbt_utils.generate_surrogate_key(['ZipCode', 'City', 'District', 'State', 'Region', 'Country']) }}::STRING
-                                                                        AS GeoSK,
-        ZipCode                                                         AS ZipCode,
-        City                                                            AS City,
-        State                                                           AS State,
-        District                                                        AS District,
-        Region                                                          AS Region,
-        Country                                                         AS Country
+        {{ dbt_utils.generate_surrogate_key(['zip_code', 'city', 'district', 'state', 'region', 'country']) }}::STRING
+                                                                        AS geo_sk,
+        zip_code                                                        AS zip_code,
+        city                                                            AS city,
+        state                                                           AS state,
+        district                                                        AS district,
+        region                                                          AS region,
+        country                                                         AS country
     FROM source_data
-    {{ dedupe_records('ZipCode', 'LoadDate') }}
+    {{ dedupe_records('zip_code', 'load_date') }}
 )
 
 
 SELECT *,
-        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ      AS UpdatedTS
+        CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ      AS updated_ts
 FROM deduped src
 
 {% if is_incremental() %}
 WHERE NOT EXISTS (
         SELECT 1
         FROM {{this}} dest
-        WHERE   src.GeoSK = dest.GeoSK)
+        WHERE   src.geo_sk = dest.geo_sk)
 {% endif %}

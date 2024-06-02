@@ -7,38 +7,38 @@ renamed AS(
     SELECT 
         
         -- ID Columns
-        Date::DATE                  AS OrderDate,
-        ProductID::NUMBER           AS ProductID,
-        CampaignID::NUMBER          AS CampaignID,
-        CustomerID::NUMBER          AS CustomerID,
-        ManufacturerID::NUMBER      AS ManufacturerID,
-        ZipCode::NUMBER             AS ZipCode,
+        Date::DATE                  AS order_date,
+        ProductID::NUMBER           AS product_id,
+        CampaignID::NUMBER          AS campaign_id,
+        CustomerID::NUMBER          AS customer_id,
+        ManufacturerID::NUMBER      AS manufacturer_id,
+        ZipCode::NUMBER             AS zip_code,
 
         -- Entity = Geography
-        City::VARCHAR               AS City,
-        State::VARCHAR              AS State,
-        District::VARCHAR           AS District,
-        Region::VARCHAR             AS Region,
-        Country::VARCHAR            AS Country,
+        City::VARCHAR               AS city,
+        State::VARCHAR              AS state,
+        District::VARCHAR           AS district,
+        Region::VARCHAR             AS region,
+        Country::VARCHAR            AS country,
 
         -- Entity = Product
-        Product::VARCHAR            AS Product,
-        Category::VARCHAR           AS Category,
-        Segment::VARCHAR            AS Segment,
-        "Unit Cost"::FLOAT          AS UnitCost,
-        "Unit Price"::FLOAT         AS UnitPrice,
+        Product::VARCHAR            AS product,
+        Category::VARCHAR           AS category,
+        Segment::VARCHAR            AS segment,
+        "Unit Cost"::FLOAT          AS unit_cost,
+        "Unit Price"::FLOAT         AS unit_price,
 
         -- Entity = Customer
-        "Email Name"::VARCHAR       AS EmailName,
+        "Email Name"::VARCHAR       AS email_name,
 
         -- Entity = Manufacturer
-        Manufacturer::VARCHAR       AS Manufacturer,
+        Manufacturer::VARCHAR       AS manufacturer,
 
         -- Metrics
-        Units::NUMBER               AS Units,
+        Units::NUMBER               AS units,
 
         -- Metadata
-        LoadDate::DATE              AS LoadDate
+        LoadDate::DATE              AS load_date
 
     FROM source
 )

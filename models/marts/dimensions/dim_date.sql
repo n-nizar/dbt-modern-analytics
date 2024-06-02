@@ -17,9 +17,9 @@ WITH date_spine AS (
     SELECT 
         date_day                                            AS date_day,
         DATE_PART('dayofmonth', date_day)                   AS day,
-        DAYNAME(TO_DATE(date_day))                          AS dayname,
+        DAYNAME(TO_DATE(date_day))                          AS day_name,
         DATE_PART('month', date_day)                        AS month,
-        MONTHNAME(TO_DATE(date_day))                        AS monthname,
+        MONTHNAME(TO_DATE(date_day))                        AS month_name,
         DATE_PART('quarter', date_day)                      AS quarter,
         DATE_PART('year', date_day)                         AS year
     FROM
