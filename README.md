@@ -42,7 +42,7 @@ The fact table will store transactional data and metrics for analysis. It will i
   - campaign_id
   - geo_sk
   - manufacturer_sk
-  - Units
+  - units
   - updated_ts
 
 ### Dimension Tables
