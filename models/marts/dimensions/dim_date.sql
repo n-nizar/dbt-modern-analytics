@@ -16,11 +16,14 @@ WITH date_spine AS (
 ), final as (
     SELECT 
         date_day                                            AS date_day,
-        DATE_PART('dayofmonth', date_day)                   AS day,
-        DAYNAME(TO_DATE(date_day))                          AS day_name,
-        DATE_PART('month', date_day)                        AS month,
-        MONTHNAME(TO_DATE(date_day))                        AS month_name,
-        DATE_PART('quarter', date_day)                      AS quarter,
+        TO_CHAR(date_day,'DD')                              AS day,
+        DECODE(DAYNAME(date_day), 'Mon', 'Monday', 'Tue',
+        'Tuesday', 'Wed', 'Wednesday',
+        'Thu', 'Thursday', 'Fri', 'Friday',
+        'Sat', 'Saturday', 'Sun', 'Sunday')                 AS day_name,
+        TO_CHAR(date_day,'MM')                              AS month,
+        TO_CHAR(date_day,'MMMM')                            AS month_name,
+        'Q' || DATE_PART('quarter', date_day)               AS quarter,
         DATE_PART('year', date_day)                         AS year
     FROM
     date_spine
