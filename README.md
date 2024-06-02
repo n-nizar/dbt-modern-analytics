@@ -59,14 +59,13 @@ The dimension tables will provide context to the fact table by storing descripti
 - updated_ts
 
 #### dim_date
-- order_date
+- date_day
 - day
 - day_name
 - month
 - month_name
 - quarter
 - year
-- weekday
 
 #### dim_product
 - product_sk (surrogate key)
