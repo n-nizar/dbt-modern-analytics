@@ -10,6 +10,15 @@ WITH source_data AS(
 ),
 
 deduped AS (
+  {{ dbt_utils.deduplicate(
+      relation='source_data',
+      partition_by='product_id',
+      order_by='load_date DESC NULLS LAST',
+     )
+  }}
+),
+
+final AS (
     SELECT DISTINCT 
         {{ dbt_utils.generate_surrogate_key(['product_id', 'product', 'category', 'segment', 'unit_cost', 'unit_price']) }}::STRING
                                                                         AS product_sk,
@@ -19,14 +28,12 @@ deduped AS (
         segment                                                         AS segment,
         unit_cost                                                       AS unit_cost,
         unit_price                                                      AS unit_price
-    FROM source_data
-    {{ dedupe_records('product_id', 'load_date') }}
+    FROM deduped
 )
-
 
 SELECT *,
         CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ       AS updated_ts
-FROM deduped src
+FROM final src
 
 {% if is_incremental() %}
 WHERE NOT EXISTS (

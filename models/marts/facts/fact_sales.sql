@@ -12,6 +12,15 @@
 }},
 
 deduped AS (
+  {{ dbt_utils.deduplicate(
+      relation='sales_staging',
+      partition_by='sales_id',
+      order_by='load_date DESC NULLS LAST',
+     )
+  }}
+),
+
+final AS (
     SELECT DISTINCT 
         {{ dbt_utils.generate_surrogate_key(['sales_id', 'units']) }}
                                                                                         AS sales_sk,
@@ -23,18 +32,17 @@ deduped AS (
         product_sk                                                                      AS product_sk,
         campaign_id                                                                     AS campaign_id,
         units                                                                           AS units
-    FROM sales_staging
-    INNER JOIN dim_customer                                                             ON sales_staging.customer_id = dim_customer.customer_id
-    INNER JOIN dim_geo                                                                  ON sales_staging.zip_code = dim_geo.zip_code
-    INNER JOIN dim_manufacturer                                                         ON sales_staging.manufacturer_id = dim_manufacturer.manufacturer_id
-    INNER JOIN dim_product                                                              ON sales_staging.product_id = dim_product.product_id
-    {{ dedupe_records('sales_id', 'load_date') }}
+    FROM deduped
+    INNER JOIN dim_customer                                                             ON deduped.customer_id = dim_customer.customer_id
+    INNER JOIN dim_geo                                                                  ON deduped.zip_code = dim_geo.zip_code
+    INNER JOIN dim_manufacturer                                                         ON deduped.manufacturer_id = dim_manufacturer.manufacturer_id
+    INNER JOIN dim_product                                                              ON deduped.product_id = dim_product.product_id
 )
 
 
 SELECT *,
         CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ                       AS updated_ts
-FROM deduped src
+FROM final src
 
 {% if is_incremental() %}
 WHERE NOT EXISTS (

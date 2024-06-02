@@ -5,12 +5,12 @@
 })}}
 
 
-WITH source AS(
-    SELECT *
-    FROM {{ ref('sales_source') }}
-),
+{{ create_cte([('sales_source', 'sales_source'), 
+('state_names', 'state_names'), 
+('country_names', 'country_names')]) 
+}},
 
-deduped AS(
+prep AS(
     SELECT 
 
     -- ID Columns
@@ -51,12 +51,58 @@ deduped AS(
         -- Metadata
         load_date                                                                       AS load_date,
         CONVERT_TIMEZONE('UTC', CURRENT_TIMESTAMP)::TIMESTAMP_NTZ                       AS updated_ts
-    FROM source
-    {{ dedupe_records('sales_id', 'load_date') }}
+    FROM sales_source
+),
+
+deduped as (
+  {{ dbt_utils.deduplicate(
+      relation='prep',
+      partition_by='sales_id',
+      order_by='load_date DESC NULLS LAST',
+     )
+  }}
+),
+
+final AS(
+    SELECT 
+
+        sales_id,
+        order_date,
+        product_id,
+        campaign_id,
+        customer_id,
+        manufacturer_id,
+        zip_code,
+
+        city,
+        state_names.state_name                  AS state,
+        district,
+        region,
+        country_names.country_name              AS country,
+
+        product,
+        category,
+        segment,
+        unit_cost,
+        unit_price,
+
+        email,
+        first_name,
+        last_name,
+
+        manufacturer,
+
+        units,
+
+        load_date,
+        updated_ts
+    FROM deduped
+    JOIN state_names                    ON deduped.state = state_names.state
+    JOIN country_names                  ON deduped.country = country_names.country   
 )
 
 SELECT *
-FROM deduped
+FROM final
 
 {% if is_incremental() %}
 WHERE load_date >= (SELECT MAX(load_date) FROM {{ this }})
