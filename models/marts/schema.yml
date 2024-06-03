@@ -1,0 +1,192 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: >
+      This model represents the dimension table for customers, which includes unique customer information along with geographical details.
+    columns:
+      - name: customer_sk
+        description: "The surrogate key for the customer."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "The identifier for the customer."
+        data_tests:
+          - not_null
+
+      - name: email
+        description: "The email address of the customer."
+        data_tests:
+          - not_null
+
+      - name: first_name
+        description: "The first name of the customer."
+
+      - name: last_name
+        description: "The last name of the customer."
+
+      - name: geo_sk
+        description: "The surrogate key for the geographical location."
+        data_tests:
+          - not_null
+
+  - name: dim_date
+    description: >
+      This model represents the dimension table for dates, which includes various date attributes for analytical purposes.
+    columns:
+      - name: date_day
+        description: "The specific date."
+        data_tests:
+          - not_null
+
+      - name: day
+        description: "The day of the month."
+
+      - name: day_name
+        description: "The name of the day."
+
+      - name: month
+        description: "The month number."
+
+      - name: month_name
+        description: "The full name of the month."
+
+      - name: quarter
+        description: "The quarter of the year."
+
+      - name: year
+        description: "The year."
+
+  - name: dim_geo
+    description: >
+      This model represents the dimension table for geographical locations, which includes unique location information.
+    columns:
+      - name: geo_sk
+        description: "The surrogate key for the geographical location."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: zip_code
+        description: "The ZIP code of the location."
+        data_tests:
+          - not_null
+
+      - name: city
+        description: "The city of the location."
+
+      - name: state
+        description: "The state of the location."
+
+      - name: district
+        description: "The district of the location."
+
+      - name: region
+        description: "The region of the location."
+
+      - name: country
+        description: "The country of the location."
+
+  - name: dim_manufacturer
+    description: >
+      This model represents the dimension table for manufacturers, which includes unique manufacturer information.
+    columns:
+      - name: manufacturer_sk
+        description: "The surrogate key for the manufacturer."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: manufacturer_id
+        description: "The identifier for the manufacturer."
+        data_tests:
+          - not_null
+
+      - name: manufacturer
+        description: "The name of the manufacturer."
+
+  - name: dim_product
+    description: >
+      This model represents the dimension table for products, which includes unique product information along with category and segment details.
+    columns:
+      - name: product_sk
+        description: "The surrogate key for the product."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: product_id
+        description: "The identifier for the product."
+        data_tests:
+          - not_null
+
+      - name: product
+        description: "The name of the product."
+
+      - name: category
+        description: "The category of the product."
+
+      - name: segment
+        description: "The segment of the product."
+
+      - name: unit_cost
+        description: "The cost per unit of the product."
+        data_tests:
+          - not_null
+
+      - name: unit_price
+        description: "The selling price per unit of the product."
+        data_tests:
+          - not_null
+
+  - name: fact_sales
+    description: >
+      This model represents the fact table for sales, which includes detailed sales transactions along with references to dimension tables.
+    columns:
+      - name: sales_sk
+        description: "The surrogate key for the sales transaction."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: sales_id
+        description: "The identifier for the sales transaction."
+        data_tests:
+          - not_null
+
+      - name: customer_sk
+        description: "The surrogate key for the customer."
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: "The date of the order."
+        data_tests:
+          - not_null
+
+      - name: geo_sk
+        description: "The surrogate key for the geographical location."
+        data_tests:
+          - not_null
+
+      - name: manufacturer_sk
+        description: "The surrogate key for the manufacturer."
+        data_tests:
+          - not_null
+
+      - name: product_sk
+        description: "The surrogate key for the product."
+        data_tests:
+          - not_null
+
+      - name: campaign_id
+        description: "The identifier for the campaign."
+        data_tests:
+          - not_null
+
+      - name: units
+        description: "The number of units sold."
+        data_tests:
+          - not_null

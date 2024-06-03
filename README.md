@@ -4,7 +4,7 @@
 
 This project focuses on data transformation and the implementation of a star schema using dbt (data build tool). The primary objective is to design and execute an efficient ETL (Extract, Transform, Load) data pipeline that converts raw source data into a structured star schema format. By leveraging dbt's capabilities, the project aims to streamline the process of building dimension and fact tables, facilitating analytical querying and reporting.
 
-![alt text](image.png)
+![alt text](image-1.png)
 
 ## Source Data
 
