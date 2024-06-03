@@ -6,31 +6,33 @@ models:
     columns:
       - name: order_date
         description: "The date of the order."
-        tests:
+        data_tests:
           - not_null
 
       - name: product_id
         description: "The identifier for the product."
-        tests:
+        data_tests:
           - not_null
 
       - name: campaign_id
         description: "The identifier for the campaign."
-        tests:
+        data_tests:
           - not_null
 
       - name: customer_id
         description: "The identifier for the customer."
-        tests:
+        data_tests:
           - not_null
 
       - name: manufacturer_id
         description: "The identifier for the manufacturer."
-        tests:
+        data_tests:
           - not_null
 
       - name: zip_code
         description: "The ZIP code of the customer's location."
+        data_tests:
+          - not_null
 
       - name: city
         description: "The city of the customer's location."
@@ -58,12 +60,12 @@ models:
 
       - name: unit_cost
         description: "The cost per unit of the product."
-        tests:
+        data_tests:
           - not_null
 
       - name: unit_price
         description: "The selling price per unit of the product."
-        tests:
+        data_tests:
           - not_null
 
       - name: email_name
@@ -74,10 +76,10 @@ models:
 
       - name: units
         description: "The number of units sold."
-        tests:
+        data_tests:
           - not_null
 
       - name: load_date
         description: "The date when the data was loaded into the AWS bucket."
-        tests:
+        data_tests:
           - not_null

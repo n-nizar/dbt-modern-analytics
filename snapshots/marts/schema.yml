@@ -1,0 +1,225 @@
+version: 2
+
+snapshots:
+  - name: dim_customer_snapshot
+    description: >
+      This snapshot model represents the dimension table for customers, including unique customer information along with geographical details.
+    columns:
+      - name: customer_sk
+        description: "The surrogate key for the customer."
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "The identifier for the customer."
+        tests:
+          - not_null
+
+      - name: email
+        description: "The email address of the customer."
+        tests:
+          - not_null
+
+      - name: first_name
+        description: "The first name of the customer."
+
+      - name: last_name
+        description: "The last name of the customer."
+
+      - name: geo_sk
+        description: "The surrogate key for the geographical location."
+        tests:
+          - not_null
+
+      - name: dbt_scd_id
+        description: "The DBT surrogate key for slowly changing dimensions."
+
+      - name: dbt_updated_at
+        description: "The timestamp when the record was last updated."
+
+      - name: dbt_valid_from
+        description: "The start timestamp for the validity of the record."
+
+      - name: dbt_valid_to
+        description: "The end timestamp for the validity of the record."
+
+  - name: dim_geo_snapshot
+    description: >
+      This snapshot model represents the dimension table for geographical locations, including unique location information.
+    columns:
+      - name: geo_sk
+        description: "The surrogate key for the geographical location."
+        tests:
+          - not_null
+          - unique
+
+      - name: zip_code
+        description: "The ZIP code of the location."
+        tests:
+          - not_null
+
+      - name: city
+        description: "The city of the location."
+
+      - name: state
+        description: "The state of the location."
+
+      - name: district
+        description: "The district of the location."
+
+      - name: region
+        description: "The region of the location."
+
+      - name: country
+        description: "The country of the location."
+
+      - name: dbt_scd_id
+        description: "The DBT surrogate key for slowly changing dimensions."
+
+      - name: dbt_updated_at
+        description: "The timestamp when the record was last updated."
+
+      - name: dbt_valid_from
+        description: "The start timestamp for the validity of the record."
+
+      - name: dbt_valid_to
+        description: "The end timestamp for the validity of the record."
+
+  - name: dim_manufacturer_snapshot
+    description: >
+      This snapshot model represents the dimension table for manufacturers, including unique manufacturer information.
+    columns:
+      - name: manufacturer_sk
+        description: "The surrogate key for the manufacturer."
+        tests:
+          - not_null
+          - unique
+
+      - name: manufacturer_id
+        description: "The identifier for the manufacturer."
+        tests:
+          - not_null
+
+      - name: manufacturer
+        description: "The name of the manufacturer."
+
+      - name: dbt_scd_id
+        description: "The DBT surrogate key for slowly changing dimensions."
+
+      - name: dbt_updated_at
+        description: "The timestamp when the record was last updated."
+
+      - name: dbt_valid_from
+        description: "The start timestamp for the validity of the record."
+
+      - name: dbt_valid_to
+        description: "The end timestamp for the validity of the record."
+
+  - name: dim_product_snapshot
+    description: >
+      This snapshot model represents the dimension table for products, including unique product information along with category and segment details.
+    columns:
+      - name: product_sk
+        description: "The surrogate key for the product."
+        tests:
+          - not_null
+          - unique
+
+      - name: product_id
+        description: "The identifier for the product."
+        tests:
+          - not_null
+
+      - name: product
+        description: "The name of the product."
+
+      - name: category
+        description: "The category of the product."
+
+      - name: segment
+        description: "The segment of the product."
+
+      - name: unit_cost
+        description: "The cost per unit of the product."
+        tests:
+          - not_null
+
+      - name: unit_price
+        description: "The selling price per unit of the product."
+        tests:
+          - not_null
+
+      - name: dbt_scd_id
+        description: "The DBT surrogate key for slowly changing dimensions."
+
+      - name: dbt_updated_at
+        description: "The timestamp when the record was last updated."
+
+      - name: dbt_valid_from
+        description: "The start timestamp for the validity of the record."
+
+      - name: dbt_valid_to
+        description: "The end timestamp for the validity of the record."
+
+  - name: fact_sales_snapshot
+    description: >
+      This snapshot model represents the fact table for sales, including detailed sales transactions along with references to dimension tables.
+    columns:
+      - name: sales_sk
+        description: "The surrogate key for the sales transaction."
+        tests:
+          - not_null
+          - unique
+
+      - name: sales_id
+        description: "The identifier for the sales transaction."
+        tests:
+          - not_null
+
+      - name: customer_sk
+        description: "The surrogate key for the customer."
+        tests:
+          - not_null
+
+      - name: order_date
+        description: "The date of the order."
+        tests:
+          - not_null
+
+      - name: geo_sk
+        description: "The surrogate key for the geographical location."
+        tests:
+          - not_null
+
+      - name: manufacturer_sk
+        description: "The surrogate key for the manufacturer."
+        tests:
+          - not_null
+
+      - name: product_sk
+        description: "The surrogate key for the product."
+        tests:
+          - not_null
+
+      - name: campaign_id
+        description: "The identifier for the campaign."
+        tests:
+          - not_null
+
+      - name: units
+        description: "The number of units sold."
+        tests:
+          - not_null
+
+      - name: dbt_scd_id
+        description: "The DBT surrogate key for slowly changing dimensions."
+
+      - name: dbt_updated_at
+        description: "The timestamp when the record was last updated."
+
+      - name: dbt_valid_from
+        description: "The start timestamp for the validity of the record."
+
+      - name: dbt_valid_to
+        description: "The end timestamp for the validity of the record."

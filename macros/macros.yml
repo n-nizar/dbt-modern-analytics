@@ -1,0 +1,15 @@
+version: 2
+
+macros:
+  - name: dbt_audit_started_exec
+    description: '{{ doc("dbt_audit_started_exec") }}'
+
+  - name: dbt_audit_finished_exec
+    description: '{{ doc("dbt_audit_finished_exec") }}'
+
+  - name: create_cte
+    description: '{{ doc("create_cte") }}'
+    arguments:
+      - name: list
+        type: list
+        description: List of tuples where each tuple includes an alias name and model reference.
