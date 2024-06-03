@@ -6,3 +6,83 @@ sources:
     schema: internal_stage
     tables:
       - name: sales
+        description: >
+          This table contains raw sales data sourced from a Snowflake stage.
+        columns:
+          - name: Date
+            description: "The date of the order."
+            tests:
+              - not_null
+
+          - name: ProductID
+            description: "The identifier for the product."
+            tests:
+              - not_null
+
+          - name: CampaignID
+            description: "The identifier for the campaign."
+            tests:
+              - not_null
+
+          - name: CustomerID
+            description: "The identifier for the customer."
+            tests:
+              - not_null
+
+          - name: ManufacturerID
+            description: "The identifier for the manufacturer."
+            tests:
+              - not_null
+
+          - name: ZipCode
+            description: "The ZIP code of the customer's location."
+
+          - name: City
+            description: "The city of the customer's location."
+
+          - name: State
+            description: "The state of the customer's location."
+
+          - name: District
+            description: "The district of the customer's location."
+
+          - name: Region
+            description: "The region of the customer's location."
+
+          - name: Country
+            description: "The country of the customer's location."
+
+          - name: Product
+            description: "The name of the product."
+
+          - name: Category
+            description: "The category of the product."
+
+          - name: Segment
+            description: "The segment of the product."
+
+          - name: "Unit Cost"
+            description: "The cost per unit of the product."
+            tests:
+              - not_null
+
+          - name: "Unit Price"
+            description: "The selling price per unit of the product."
+            tests:
+              - not_null
+
+          - name: "Email Name"
+            description: "Concatenates the Email and Name of the customer into a string."
+
+          - name: Manufacturer
+            description: "The name of the manufacturer."
+
+          - name: Units
+            description: "The number of units sold."
+            tests:
+              - not_null
+
+          - name: LoadDate
+            description: "The date when the data was loaded into the AWS bucket."
+            tests:
+              - not_null

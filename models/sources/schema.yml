@@ -1,17 +1,9 @@
 version: 2
 
 models:
-  - name: sales_staging
-    description: >
-      This model represents the final cleaned and enriched sales data, combining information from the `deduped` table
-      with additional state and country details.
+  - name: sales_source
+    description: "Raw sales data sourced from a Snowflake stage"
     columns:
-      - name: sales_id
-        description: "The unique identifier for the sales record."
-        tests:
-          - not_null
-          - unique
-
       - name: order_date
         description: "The date of the order."
         tests:
@@ -39,8 +31,6 @@ models:
 
       - name: zip_code
         description: "The ZIP code of the customer's location."
-        tests:
-          - not_null
 
       - name: city
         description: "The city of the customer's location."
@@ -52,7 +42,7 @@ models:
         description: "The district of the customer's location."
 
       - name: region
-        description: "The region where the order was placed."
+        description: "The region of the customer's location."
 
       - name: country
         description: "The country of the customer's location."
@@ -76,14 +66,8 @@ models:
         tests:
           - not_null
 
-      - name: email
-        description: "The email address of the customer."
-
-      - name: first_name
-        description: "The first name of the customer."
-
-      - name: last_name
-        description: "The last name of the customer."
+      - name: email_name
+        description: "Concatenates the Email and Name of the customer into a string."
 
       - name: manufacturer
         description: "The name of the manufacturer."
@@ -94,11 +78,6 @@ models:
           - not_null
 
       - name: load_date
-        description: "The date when the data was loaded into the staging environment."
-        tests:
-          - not_null
-
-      - name: updated_ts
-        description: "The timestamp when the record was last updated."
+        description: "The date when the data was loaded into the AWS bucket."
         tests:
           - not_null
