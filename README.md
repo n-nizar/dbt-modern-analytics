@@ -122,10 +122,6 @@ The project is organized into the following directories and files:
 
 - Directory for storing reusable SQL macros.
 
-### Data
-
-- Directory for storing additional data files.
-
 ### Seeds
 
 - Directory for storing seed data files.
@@ -151,6 +147,7 @@ Run the following dbt commands:
 
 - To compile the models: `dbt compile`
 - To run the models: `dbt run`
+- To run the snapshots: `dbt snapshot`
 - To test the models: `dbt test`
 - To generate documentation: `dbt docs generate`
 - To serve the documentation: `dbt docs serve`
