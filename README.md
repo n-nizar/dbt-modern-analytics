@@ -138,8 +138,8 @@ The project is organized into the following directories and files:
 
 3. **Clone the Repository**:
    ```bash
-   git clone <repository_url>
-   cd <repository_name>
+   git clone https://github.com/n-nizar/dbt-modern-analytics.git
+   cd dbt-modern-analytics
    
 ## How to Run the Project
 
